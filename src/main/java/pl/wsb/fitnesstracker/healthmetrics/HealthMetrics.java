@@ -1,12 +1,12 @@
 package pl.wsb.fitnesstracker.healthmetrics;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.annotation.Nullable;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import pl.wsb.fitnesstracker.user.api.User;
 
 import java.time.LocalDate;
 
@@ -16,11 +16,15 @@ import java.time.LocalDate;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString
 public class HealthMetrics {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Nullable
     @Column(name = "id", nullable = false)
-    private Integer id;
+    private Long id;
 
-    @Column(name = "user_id", nullable = false)
-    private Integer user_id;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user_id;
 
     @Column(name = "date", nullable = false)
     private LocalDate date;
@@ -35,8 +39,8 @@ public class HealthMetrics {
     private Integer heartRate;
 
     public HealthMetrics(
-            final Integer id,
-            final Integer user_id,
+            final Long id,
+            final User user_id,
             final LocalDate date,
             final Integer height,
             final Integer weight,
